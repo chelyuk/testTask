@@ -3,6 +3,7 @@ package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,6 +27,7 @@ public class CalendarFrame extends AbstractPage {
 
     @FindBy(css="li.saveSpace")
     WebElement timeSelectButton;
+
     @FindBy(id = "widgetFieldDateRange")
     WebElement dateRange;
 
@@ -43,8 +45,9 @@ public class CalendarFrame extends AbstractPage {
 
     public CalendarFrame selectTimeframe(String timeFrame, Boolean smallCalendar) {
         WebElement dateButton = null;
-        if (smallCalendar)
+        if (smallCalendar) {
             timeSelectButton.click();
+        }
         switch (timeFrame) {
             case "yesterday":
                 dateButton = yesterdayButton;

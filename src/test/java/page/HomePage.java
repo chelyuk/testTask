@@ -1,5 +1,6 @@
 package page;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -29,12 +30,22 @@ public class HomePage extends AbstractPage {
         return this;
     }
 
-    public HomePage showResearchAndEducation() {
+    public HomePage showResearchAndEducation(Boolean small) {
+        if (small) {
+            WebElement menu = driver.findElement(By.cssSelector(".toggle-bar>.toggleLeftNav"));
+            menu.click();
+            researchAndEducation = driver.findElement(By.
+                    xpath("//a[contains(@class, 'navbar-nav__toggleArrow')]/i[contains(@class,'fa-pie-chart')]"));
+            Actions actions = new Actions(driver);
+            actions.scrollToElement(researchAndEducation).scrollByAmount(0,riskBlock.getSize().getHeight()).perform();
+        }
         researchAndEducation.click();
         return this;
     }
-
-    public CalendarPage clickEconomicCalendar() {
+    public CalendarPage clickEconomicCalendar(Boolean small) {
+        if (small) {
+            economicCalendar = driver.findElement(By.cssSelector("i.fa-calendar"));
+        }
         Actions actions = new Actions(driver);
         actions.scrollToElement(economicCalendar);
         actions.scrollToElement(economicCalendar).scrollByAmount(0,riskBlock.getSize().getHeight()).perform();

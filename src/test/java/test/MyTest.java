@@ -29,7 +29,7 @@ public class MyTest {
         return new Object[][]{
                 {"fullscreen"},
                 {"1024x768"},
-//                {"800x600"}
+                {"800x600"}
         };
     }
 
@@ -43,6 +43,7 @@ public class MyTest {
     public void myTest(String resolution) {
         HomePage page;
         Boolean smallCalendar = Boolean.FALSE;
+        Boolean smallHomePage = Boolean.FALSE;
         SoftAssert polite = new SoftAssert();
         Dimension dimension;
         switch(resolution) {
@@ -55,12 +56,14 @@ public class MyTest {
                 driver.manage().window().setSize(dimension);
                 break;
             case "800x600":
-                smallCalendar = Boolean.TRUE;
+                smallHomePage = Boolean.TRUE;
                 dimension = new Dimension(800,600);
                 driver.manage().window().setSize(dimension);
         }
         page = new HomePage(driver).openPage().closePrivacyPopUp();
-        CalendarFrame calendar = page.showResearchAndEducation().clickEconomicCalendar().openCalendarFrame();
+        CalendarFrame calendar = page.showResearchAndEducation(smallHomePage)
+                .clickEconomicCalendar(smallHomePage)
+                .openCalendarFrame();
         RiskDisclosurePage document = calendar
                 .selectTimeframe("yesterday", smallCalendar)
                 .selectTimeframe("today", smallCalendar)

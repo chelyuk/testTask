@@ -27,6 +27,8 @@ public class CalendarPage extends AbstractPage {
 
 
     public CalendarFrame openCalendarFrame() {
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(calendarFrame).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
         driver.switchTo().frame(calendarFrame);
         return new CalendarFrame(driver);
     }
