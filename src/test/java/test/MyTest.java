@@ -23,15 +23,6 @@ public class MyTest {
     Boolean smallCalendar = Boolean.FALSE;
     Boolean smallHomePage = Boolean.FALSE;
 
-//    @DataProvider(name = "screen-resolution")
-//    public Object[][] screenSize () {
-//        return new Object[][]{
-//                {"fullscreen"},
-//                {"1024x768"},
-//                {"800x600"}
-//        };
-//    }
-
     @BeforeMethod(alwaysRun = true)
     @Parameters("resolution")
     public void browserSetup(String resolution) {
@@ -57,8 +48,7 @@ public class MyTest {
     @Test(description = "MyTest task")
     public void myTest() {
         SoftAssert polite = new SoftAssert();
-        HomePage page;
-        page = new HomePage(driver).openPage().closePrivacyPopUp();
+        HomePage page = new HomePage(driver).openPage().closePrivacyPopUp();
         CalendarFrame calendar = page.showResearchAndEducation(smallHomePage)
                 .clickEconomicCalendar(smallHomePage)
                 .openCalendarFrame();
