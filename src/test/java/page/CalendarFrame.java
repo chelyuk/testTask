@@ -24,6 +24,8 @@ public class CalendarFrame extends AbstractPage {
         return this;
     }
 
+    @FindBy(css="li.saveSpace")
+    WebElement timeSelectButton;
     @FindBy(id = "widgetFieldDateRange")
     WebElement dateRange;
 
@@ -39,34 +41,35 @@ public class CalendarFrame extends AbstractPage {
     @FindBy(id = "timeFrame_thisWeek")
     WebElement thisWeekButton;
 
-    public CalendarFrame selectYesterday() {
-        getDate(yesterdayButton);
+    public CalendarFrame selectTimeframe(String timeFrame, Boolean smallCalendar) {
+        WebElement dateButton = null;
+        if (smallCalendar)
+            timeSelectButton.click();
+        switch (timeFrame) {
+            case "yesterday":
+                dateButton = yesterdayButton;
+                break;
+            case "today":
+                dateButton = todayButton;
+                break;
+            case "tomorrow":
+                dateButton = tomorrowButton;
+                break;
+            case "this week":
+                dateButton = thisWeekButton;
+        }
+        dateButton.click();
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(
+                driver -> ExpectedConditions.invisibilityOfElementLocated(By.id("economicCalendarLoading")).apply(driver));
+        timeList.add(dateRange.getText());
         return this;
     }
-    public CalendarFrame selectToday() {
-        getDate(todayButton);
-        return this;
-    }
-    public CalendarFrame selectTomorrow() {
-        getDate(tomorrowButton);
-        return this;
-    }
-    public CalendarFrame selectThisWeek() {
-        getDate(thisWeekButton);
-        return this;
-    }
+
     public CalendarPage returnToCalendarPage() {
         driver.switchTo().defaultContent();
         return new CalendarPage(driver);
     }
     public List<String> getDates() {
         return timeList;
-    }
-
-    private boolean getDate(WebElement button){
-        button.click();
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(
-                driver -> ExpectedConditions.invisibilityOfElementLocated(By.id("economicCalendarLoading")).apply(driver));
-        return timeList.add(dateRange.getText());
     }
 }

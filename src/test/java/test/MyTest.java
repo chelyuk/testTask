@@ -10,7 +10,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import page.CalendarFrame;
-import page.CalendarPage;
 import page.HomePage;
 import page.RiskDisclosurePage;
 
@@ -28,8 +27,8 @@ public class MyTest {
     @DataProvider(name = "screen-resolution")
     public Object[][] screenSize () {
         return new Object[][]{
-                {"fullscreen"}
-//                {"1024x768"},
+                {"fullscreen"},
+                {"1024x768"},
 //                {"800x600"}
         };
     }
@@ -43,6 +42,7 @@ public class MyTest {
     @Test(description = "MyTest task", dataProvider = "screen-resolution")
     public void myTest(String resolution) {
         HomePage page;
+        Boolean smallCalendar = Boolean.FALSE;
         SoftAssert polite = new SoftAssert();
         Dimension dimension;
         switch(resolution) {
@@ -50,20 +50,22 @@ public class MyTest {
                 driver.manage().window().maximize();
                 break;
             case "1024x768":
+                smallCalendar = Boolean.TRUE;
                 dimension = new Dimension(1024,768);
                 driver.manage().window().setSize(dimension);
                 break;
             case "800x600":
+                smallCalendar = Boolean.TRUE;
                 dimension = new Dimension(800,600);
                 driver.manage().window().setSize(dimension);
         }
         page = new HomePage(driver).openPage().closePrivacyPopUp();
         CalendarFrame calendar = page.showResearchAndEducation().clickEconomicCalendar().openCalendarFrame();
         RiskDisclosurePage document = calendar
-                .selectYesterday()
-                .selectToday()
-                .selectTomorrow()
-                .selectThisWeek()
+                .selectTimeframe("yesterday", smallCalendar)
+                .selectTimeframe("today", smallCalendar)
+                .selectTimeframe("tomorrow", smallCalendar)
+                .selectTimeframe("this week", smallCalendar)
                 .returnToCalendarPage()
                 .clickHere()
                 .clickHere();
