@@ -4,10 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import page.CalendarFrame;
 import page.HomePage;
@@ -23,29 +20,24 @@ import static org.hamcrest.Matchers.containsString;
 
 public class MyTest {
     private WebDriver driver;
+    Boolean smallCalendar = Boolean.FALSE;
+    Boolean smallHomePage = Boolean.FALSE;
 
-    @DataProvider(name = "screen-resolution")
-    public Object[][] screenSize () {
-        return new Object[][]{
-                {"fullscreen"},
-                {"1024x768"},
-                {"800x600"}
-        };
-    }
+//    @DataProvider(name = "screen-resolution")
+//    public Object[][] screenSize () {
+//        return new Object[][]{
+//                {"fullscreen"},
+//                {"1024x768"},
+//                {"800x600"}
+//        };
+//    }
 
     @BeforeMethod(alwaysRun = true)
-    public void browserSetup() {
+    @Parameters("resolution")
+    public void browserSetup(String resolution) {
+        Dimension dimension;
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-    }
-
-    @Test(description = "MyTest task", dataProvider = "screen-resolution")
-    public void myTest(String resolution) {
-        HomePage page;
-        Boolean smallCalendar = Boolean.FALSE;
-        Boolean smallHomePage = Boolean.FALSE;
-        SoftAssert polite = new SoftAssert();
-        Dimension dimension;
         switch(resolution) {
             case "fullscreen":
                 driver.manage().window().maximize();
@@ -60,6 +52,12 @@ public class MyTest {
                 dimension = new Dimension(800,600);
                 driver.manage().window().setSize(dimension);
         }
+    }
+
+    @Test(description = "MyTest task")
+    public void myTest() {
+        SoftAssert polite = new SoftAssert();
+        HomePage page;
         page = new HomePage(driver).openPage().closePrivacyPopUp();
         CalendarFrame calendar = page.showResearchAndEducation(smallHomePage)
                 .clickEconomicCalendar(smallHomePage)
@@ -78,7 +76,7 @@ public class MyTest {
         LocalDate weekStart = today.minusWeeks(1).with(DayOfWeek.SUNDAY);
         LocalDate weekEnd = today.with(DayOfWeek.SATURDAY);
 
-        polite.assertEquals(calendar.getDates().get(0),  dateFormatter(yesterday));
+        polite.assertEquals(calendar.getDates().get(0), dateFormatter(yesterday));
         polite.assertEquals(calendar.getDates().get(1), dateFormatter(today));
         polite.assertEquals(calendar.getDates().get(2), dateFormatter(tomorrow));
         polite.assertEquals(calendar.getDates().get(3), weekFormatter(weekStart, weekEnd));
