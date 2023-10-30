@@ -7,12 +7,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-//import utils.Interactions;
 
 import java.time.Duration;
+import java.util.List;
 
 public class StocksPage extends AbstractPage {
-//    private final Interactions interactions = new Interactions(this);
     Actions actions = new Actions(driver);
 
     protected StocksPage(WebDriver driver) {
@@ -40,7 +39,21 @@ public class StocksPage extends AbstractPage {
         return this.driver.findElement(By.xpath(selector));
     }
 
-    public String getCellData(String symbol, int columnNumber) {
+    public List<WebElement> tableCells(String symbol) {
+        String selector = String.format("//td[normalize-space(text()) = '%s']//..//td[not(contains(@style, 'display: none'))]", symbol);
+        return this.driver.findElements(By.xpath(selector));
+    }
+
+    public WebElement tableAdditionalCell(String symbol, int additionalColumnNumber) {
+        String selector = String.format("(//td[normalize-space(text()) = '%s']//..//following-sibling::tr[1]//span[@class='dtr-data' and not(child::a)])[%d]", symbol, additionalColumnNumber);
+        return this.driver.findElement(By.xpath(selector));
+    }
+
+    public String getCellData(String symbol, int columnNumber, Boolean small) {
+        int visibleColumns = tableCells(symbol).size();
+        if (small && columnNumber > visibleColumns) {
+            return tableAdditionalCell(symbol, columnNumber - visibleColumns).getText();
+        }
         return tableCell(symbol, columnNumber).getText();
     }
 
@@ -50,7 +63,7 @@ public class StocksPage extends AbstractPage {
     }
 
     public WebElement readMoreButtonSmall(String symbol) {
-        String selector = String.format("//td[normalize-space(text()) = '%s']//..//following-sibling::tr[1]", symbol);
+        String selector = String.format("//td[normalize-space(text()) = '%s']//..//following-sibling::tr[1]//a", symbol);
         return this.driver.findElement(By.xpath(selector));
     }
 
@@ -59,15 +72,22 @@ public class StocksPage extends AbstractPage {
         return this;
     }
 
+    public StocksPage expandRow(String symbol,Boolean small) {
+        if (small) {
+            navigateAndClick(symbolCell(symbol));
+        }
+        return this;
+    }
+
     public StockDetailsPage openDetails(String symbol, Boolean smallPage) {
         WebElement button;
         if (smallPage) {
-            navigateAndClick(symbolCell(symbol));
+//            navigateAndClick(symbolCell(symbol));
             button = readMoreButtonSmall(symbol);
         } else {
             button = readMoreButton(symbol);
         }
-        navigateAndClick(button);
+        navigateWaitAndClick(button);
         return new StockDetailsPage(driver);
     }
     public void navigateAndClick(WebElement element) {

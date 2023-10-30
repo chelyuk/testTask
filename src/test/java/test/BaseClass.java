@@ -32,6 +32,7 @@ public class BaseClass {
                 break;
             case "800x600":
                 smallHomePage = Boolean.TRUE;
+                smallStocksPage = Boolean.TRUE;
                 dimension = new Dimension(800,600);
                 driver.manage().window().setSize(dimension);
         }

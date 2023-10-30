@@ -41,8 +41,14 @@ public class HomePage extends AbstractPage {
     @FindBy(xpath = "//a[normalize-space(text()) = 'Trading']")
     WebElement tradingMenu;
 
+    @FindBy(xpath = "//a[@href='#tradingMenu']//span[normalize-space(text()) = 'Trading']")
+    WebElement tradingMenuSmall;
+
     @FindBy(xpath = "//div[@class='block']//a[normalize-space(text()) = 'Stocks']")
     WebElement stocksLink;
+
+    @FindBy(xpath = "//span[normalize-space(text()) = 'Stocks']")
+    WebElement stocksLinkSmall;
 
     public HomePage openPage() {
         driver.get(HOMEPAGE_URL);
@@ -64,13 +70,19 @@ public class HomePage extends AbstractPage {
     public HomePage showTrading(Boolean small) {
         if (small) {
             menu.click();
+            navigateWaitAndClick(tradingMenuSmall);
+        } else {
+            tradingMenu.click();
         }
-        tradingMenu.click();
         return this;
     }
 
-    public StocksPage clickStocks() {
-        stocksLink.click();
+    public StocksPage clickStocks(Boolean small) {
+        if (small) {
+            navigateWaitAndClick(stocksLinkSmall);
+        } else {
+            stocksLink.click();
+        }
         return new StocksPage(driver);
     }
 
@@ -78,7 +90,7 @@ public class HomePage extends AbstractPage {
         if (small) {
             economicCalendar = economicCalendarSmall;
         }
-        actions.scrollToElement(economicCalendar).scrollByAmount(0,riskBlock.getSize().getHeight()).perform();
+        actions.scrollToElement(economicCalendar).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
         economicCalendar.click();
         return new CalendarPage(driver);
     }
@@ -86,5 +98,20 @@ public class HomePage extends AbstractPage {
     public HomePage closePrivacyPopUp() {
         closePrivacyPopUpButton.click();
         return this;
+    }
+
+    public void navigateWaitAndClick(WebElement element) {
+        waitForClickable(element);
+        navigate(element);
+        element.click();
+    }
+
+    public void navigate(WebElement element) {
+        actions.scrollToElement(element).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
+    }
+
+    public void waitForClickable(WebElement element) {
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(
+                driver -> ExpectedConditions.elementToBeClickable(element).apply(driver));
     }
 }

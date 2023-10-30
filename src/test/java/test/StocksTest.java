@@ -22,18 +22,21 @@ public class StocksTest extends BaseClass {
     @Test(description = "Test Stock functionality", dataProvider = "symbol")
     public void stockTest(String symbol) {
         HomePage page = new HomePage(driver).openPage().closePrivacyPopUp();
-        StocksPage stocksPage = page.showTrading(smallHomePage).clickStocks().filterNorway();
+        StocksPage stocksPage = page.
+                showTrading(smallHomePage).
+                clickStocks(smallHomePage).
+                filterNorway().expandRow(symbol, smallStocksPage);
 
         Stock stockMainTable = new Stock();
 
-        stockMainTable.setSymbol(stocksPage.getCellData(symbol, 1));
-        stockMainTable.setMT5(stocksPage.getCellData(symbol, 2));
-        stockMainTable.setSpread(stocksPage.getCellData(symbol, 3));
-        stockMainTable.setTradeSize(stocksPage.getCellData(symbol, 4));
-        stockMainTable.setMargin(stocksPage.getCellData(symbol, 5));
-        stockMainTable.setLongSwapValue(stocksPage.getCellData(symbol, 6));
-        stockMainTable.setShortSwapValue(stocksPage.getCellData(symbol, 7));
-        stockMainTable.setLimit(stocksPage.getCellData(symbol, 8));
+        stockMainTable.setSymbol(stocksPage.getCellData(symbol, 1, smallStocksPage));
+        stockMainTable.setMT5(stocksPage.getCellData(symbol, 2, smallHomePage));
+        stockMainTable.setSpread(stocksPage.getCellData(symbol, 3, smallHomePage));
+        stockMainTable.setTradeSize(stocksPage.getCellData(symbol, 4, smallHomePage));
+        stockMainTable.setMargin(stocksPage.getCellData(symbol, 5, smallHomePage));
+        stockMainTable.setLongSwapValue(stocksPage.getCellData(symbol, 6, smallHomePage));
+        stockMainTable.setShortSwapValue(stocksPage.getCellData(symbol, 7, smallHomePage));
+        stockMainTable.setLimit(stocksPage.getCellData(symbol, 8, smallHomePage));
 
         StockDetailsPage stockDetailsPage = stocksPage.openDetails(symbol, smallStocksPage);
 
