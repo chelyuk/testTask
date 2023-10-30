@@ -22,7 +22,7 @@ public class StocksTest extends BaseClass {
     @Test(description = "Test Stock functionality", dataProvider = "symbol")
     public void stockTest(String symbol) {
         HomePage page = new HomePage(driver).openPage().closePrivacyPopUp();
-        StocksPage stocksPage = page.showTrading().clickStocks().filterNorway();
+        StocksPage stocksPage = page.showTrading(smallHomePage).clickStocks().filterNorway();
 
         Stock stockMainTable = new Stock();
 
@@ -35,7 +35,7 @@ public class StocksTest extends BaseClass {
         stockMainTable.setShortSwapValue(stocksPage.getCellData(symbol, 7));
         stockMainTable.setLimit(stocksPage.getCellData(symbol, 8));
 
-        StockDetailsPage stockDetailsPage = stocksPage.openDetails(symbol);
+        StockDetailsPage stockDetailsPage = stocksPage.openDetails(symbol, smallStocksPage);
 
         Stock stockDetailedTable = new Stock();
 

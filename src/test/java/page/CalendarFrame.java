@@ -48,19 +48,14 @@ public class CalendarFrame extends AbstractPage {
         if (smallCalendar) {
             timeSelectButton.click();
         }
-        switch (timeFrame) {
-            case "yesterday":
-                dateButton = yesterdayButton;
-                break;
-            case "today":
-                dateButton = todayButton;
-                break;
-            case "tomorrow":
-                dateButton = tomorrowButton;
-                break;
-            case "this week":
-                dateButton = thisWeekButton;
-        }
+        dateButton = switch (timeFrame) {
+            case "yesterday" -> yesterdayButton;
+            case "today" -> todayButton;
+            case "tomorrow" -> tomorrowButton;
+            case "this week" -> thisWeekButton;
+            default -> dateButton;
+        };
+        assert dateButton != null;
         dateButton.click();
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(
                 driver -> ExpectedConditions.invisibilityOfElementLocated(By.id("economicCalendarLoading")).apply(driver));

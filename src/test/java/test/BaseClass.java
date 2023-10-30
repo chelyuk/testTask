@@ -12,6 +12,7 @@ public class BaseClass {
     protected WebDriver driver;
     Boolean smallCalendar = Boolean.FALSE;
     Boolean smallHomePage = Boolean.FALSE;
+    Boolean smallStocksPage = Boolean.FALSE;
 
     @BeforeMethod(alwaysRun = true)
     @Parameters("resolution")
@@ -25,6 +26,7 @@ public class BaseClass {
                 break;
             case "1024x768":
                 smallCalendar = Boolean.TRUE;
+                smallStocksPage = Boolean.TRUE;
                 dimension = new Dimension(1024,768);
                 driver.manage().window().setSize(dimension);
                 break;

@@ -9,10 +9,10 @@ public abstract class AbstractPage {
 
     protected abstract AbstractPage openPage();
 
-    protected final int WAIT_TIMEPUT_SECONDS = 5;
+    protected final int WAIT_TIMEOUT_SECONDS = 5;
 
     protected AbstractPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(new AjaxElementLocatorFactory(driver, WAIT_TIMEPUT_SECONDS), this);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, WAIT_TIMEOUT_SECONDS), this);
     }
 }

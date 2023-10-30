@@ -55,13 +55,16 @@ public class HomePage extends AbstractPage {
             researchAndEducation = researchAndEducationSmall;
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(
                     driver -> ExpectedConditions.elementToBeClickable(researchAndEducation).apply(driver));
-            actions.scrollToElement(researchAndEducation).scrollByAmount(0,riskBlock.getSize().getHeight()).perform();
+            actions.scrollToElement(researchAndEducation).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
         }
         researchAndEducation.click();
         return this;
     }
 
-    public HomePage showTrading() {
+    public HomePage showTrading(Boolean small) {
+        if (small) {
+            menu.click();
+        }
         tradingMenu.click();
         return this;
     }
