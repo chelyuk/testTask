@@ -82,7 +82,6 @@ public class StocksPage extends AbstractPage {
     public StockDetailsPage openDetails(String symbol, Boolean smallPage) {
         WebElement button;
         if (smallPage) {
-//            navigateAndClick(symbolCell(symbol));
             button = readMoreButtonSmall(symbol);
         } else {
             button = readMoreButton(symbol);

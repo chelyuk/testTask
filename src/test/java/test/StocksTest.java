@@ -29,27 +29,13 @@ public class StocksTest extends BaseClass {
 
         Stock stockMainTable = new Stock();
 
-        stockMainTable.setSymbol(stocksPage.getCellData(symbol, 1, smallStocksPage));
-        stockMainTable.setMT5(stocksPage.getCellData(symbol, 2, smallHomePage));
-        stockMainTable.setSpread(stocksPage.getCellData(symbol, 3, smallHomePage));
-        stockMainTable.setTradeSize(stocksPage.getCellData(symbol, 4, smallHomePage));
-        stockMainTable.setMargin(stocksPage.getCellData(symbol, 5, smallHomePage));
-        stockMainTable.setLongSwapValue(stocksPage.getCellData(symbol, 6, smallHomePage));
-        stockMainTable.setShortSwapValue(stocksPage.getCellData(symbol, 7, smallHomePage));
-        stockMainTable.setLimit(stocksPage.getCellData(symbol, 8, smallHomePage));
+        saveData(symbol, stockMainTable, stocksPage);
 
         StockDetailsPage stockDetailsPage = stocksPage.openDetails(symbol, smallStocksPage);
 
         Stock stockDetailedTable = new Stock();
 
-        stockDetailedTable.setSymbol(stockDetailsPage.getCellData("Description"));
-        stockDetailedTable.setMT5(stockDetailsPage.getCellData("Symbols"));
-        stockDetailedTable.setSpread(stockDetailsPage.getCellData("Spread as low as (quote currency)"));
-        stockDetailedTable.setTradeSize(stockDetailsPage.getCellData("Min/Max Trade Size"));
-        stockDetailedTable.setMargin(stockDetailsPage.getCellData("Margin requirement"));
-        stockDetailedTable.setLongSwapValue(stockDetailsPage.getCellData("Swap Value in Margin Currency Long"));
-        stockDetailedTable.setShortSwapValue(stockDetailsPage.getCellData("Swap Value in Margin Currency Short"));
-        stockDetailedTable.setLimit(stockDetailsPage.getCellData("Limit and Stop Levels**"));
+        saveDataDetailedPage(stockDetailedTable, stockDetailsPage);
 
         assertThat(stockMainTable.getSymbol(), containsString(stockDetailedTable.getSymbol()));
         assertThat(stockMainTable.getMT5(), equalTo(stockDetailedTable.getMT5()));
@@ -59,5 +45,27 @@ public class StocksTest extends BaseClass {
         assertThat(stockMainTable.getLongSwapValue(), equalTo(stockDetailedTable.getLongSwapValue()));
         assertThat(stockMainTable.getShortSwapValue(), equalTo(stockDetailedTable.getShortSwapValue()));
         assertThat(stockMainTable.getLimit(), equalTo(stockDetailedTable.getLimit()));
+    }
+
+    private static void saveDataDetailedPage(Stock stockDetailedTable, StockDetailsPage stockDetailsPage) {
+        stockDetailedTable.setSymbol(stockDetailsPage.getCellData("Description"));
+        stockDetailedTable.setMT5(stockDetailsPage.getCellData("Symbols"));
+        stockDetailedTable.setSpread(stockDetailsPage.getCellData("Spread as low as (quote currency)"));
+        stockDetailedTable.setTradeSize(stockDetailsPage.getCellData("Min/Max Trade Size"));
+        stockDetailedTable.setMargin(stockDetailsPage.getCellData("Margin requirement"));
+        stockDetailedTable.setLongSwapValue(stockDetailsPage.getCellData("Swap Value in Margin Currency Long"));
+        stockDetailedTable.setShortSwapValue(stockDetailsPage.getCellData("Swap Value in Margin Currency Short"));
+        stockDetailedTable.setLimit(stockDetailsPage.getCellData("Limit and Stop Levels**"));
+    }
+
+    private void saveData(String symbol, Stock stockMainTable, StocksPage stocksPage) {
+        stockMainTable.setSymbol(stocksPage.getCellData(symbol, 1, smallStocksPage));
+        stockMainTable.setMT5(stocksPage.getCellData(symbol, 2, smallHomePage));
+        stockMainTable.setSpread(stocksPage.getCellData(symbol, 3, smallHomePage));
+        stockMainTable.setTradeSize(stocksPage.getCellData(symbol, 4, smallHomePage));
+        stockMainTable.setMargin(stocksPage.getCellData(symbol, 5, smallHomePage));
+        stockMainTable.setLongSwapValue(stocksPage.getCellData(symbol, 6, smallHomePage));
+        stockMainTable.setShortSwapValue(stocksPage.getCellData(symbol, 7, smallHomePage));
+        stockMainTable.setLimit(stocksPage.getCellData(symbol, 8, smallHomePage));
     }
 }
