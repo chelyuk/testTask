@@ -38,6 +38,12 @@ public class HomePage extends AbstractPage {
     @FindBy(id = "risk-block")
     WebElement riskBlock;
 
+    @FindBy(xpath = "//a[normalize-space(text()) = 'Trading']")
+    WebElement tradingMenu;
+
+    @FindBy(xpath = "//div[@class='block']//a[normalize-space(text()) = 'Stocks']")
+    WebElement stocksLink;
+
     public HomePage openPage() {
         driver.get(HOMEPAGE_URL);
         return this;
@@ -54,6 +60,17 @@ public class HomePage extends AbstractPage {
         researchAndEducation.click();
         return this;
     }
+
+    public HomePage showTrading() {
+        tradingMenu.click();
+        return this;
+    }
+
+    public StocksPage clickStocks() {
+        stocksLink.click();
+        return new StocksPage(driver);
+    }
+
     public CalendarPage clickEconomicCalendar(Boolean small) {
         if (small) {
             economicCalendar = economicCalendarSmall;
