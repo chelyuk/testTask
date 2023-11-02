@@ -18,14 +18,12 @@ public class CalendarPage extends BasePage {
     WebElement here;
 
     public CalendarFrame openCalendarFrame() {
-        Actions actions = new Actions(driver);
         navigate(calendarFrame);
         driver.switchTo().frame(calendarFrame);
         return new CalendarFrame(driver);
     }
 
     public RiskWarningPage clickHere() {
-        Actions actions = new Actions(driver);
         navigate(here);
         here.click();
         return new RiskWarningPage(driver);

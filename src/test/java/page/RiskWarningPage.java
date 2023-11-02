@@ -23,7 +23,7 @@ public class RiskWarningPage extends BasePage {
         Actions actions = new Actions(driver);
         actions.scrollToElement(here).scrollByAmount(0,riskBlock.getSize().getHeight()).perform();
         here.click();
-        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+        ArrayList<String> newTab = new ArrayList<>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
         return new RiskDisclosurePage(driver);
     }
