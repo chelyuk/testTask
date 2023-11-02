@@ -7,12 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
 
-public class RiskWarningPage extends AbstractPage{
-
-    @Override
-    protected AbstractPage openPage() {
-        return this;
-    }
+public class RiskWarningPage extends BasePage {
 
     public RiskWarningPage(WebDriver driver) {
         super(driver);

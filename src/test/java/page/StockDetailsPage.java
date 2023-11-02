@@ -4,14 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class StockDetailsPage extends AbstractPage{
+public class StockDetailsPage extends BasePage {
     protected StockDetailsPage(WebDriver driver) {
         super(driver);
-    }
-
-    @Override
-    protected AbstractPage openPage() {
-        return this;
     }
 
     public WebElement getCell(String parameter) {

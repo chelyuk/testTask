@@ -3,31 +3,19 @@ package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
-public class StocksPage extends AbstractPage {
-    Actions actions = new Actions(driver);
+public class StocksPage extends BasePage {
 
     protected StocksPage(WebDriver driver) {
         super(driver);
     }
 
-    @Override
-    public AbstractPage openPage() {
-        return this;
-    }
 
     @FindBy(xpath = "//button[contains(@data-value, 'Norway')]")
     WebElement norwayFilterButton;
-
-    @FindBy(id = "risk-block")
-    WebElement riskBlock;
 
     public WebElement symbolCell(String symbol) {
         String selector = String.format("//td[normalize-space(text()) = '%s']", symbol);
@@ -88,24 +76,5 @@ public class StocksPage extends AbstractPage {
         }
         navigateWaitAndClick(button);
         return new StockDetailsPage(driver);
-    }
-    public void navigateAndClick(WebElement element) {
-        navigate(element);
-        element.click();
-    }
-
-    public void navigateWaitAndClick(WebElement element) {
-        waitForClickable(element);
-        navigate(element);
-        element.click();
-    }
-
-    public void navigate(WebElement element) {
-        actions.scrollToElement(element).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
-    }
-
-    public void waitForClickable(WebElement element) {
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(
-                driver -> ExpectedConditions.elementToBeClickable(element).apply(driver));
     }
 }
