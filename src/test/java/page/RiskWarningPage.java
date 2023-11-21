@@ -7,12 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
 
-public class RiskWarningPage extends AbstractPage{
-
-    @Override
-    protected AbstractPage openPage() {
-        return this;
-    }
+public class RiskWarningPage extends BasePage {
 
     public RiskWarningPage(WebDriver driver) {
         super(driver);
@@ -28,7 +23,7 @@ public class RiskWarningPage extends AbstractPage{
         Actions actions = new Actions(driver);
         actions.scrollToElement(here).scrollByAmount(0,riskBlock.getSize().getHeight()).perform();
         here.click();
-        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+        ArrayList<String> newTab = new ArrayList<>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
         return new RiskDisclosurePage(driver);
     }

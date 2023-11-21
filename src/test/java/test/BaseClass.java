@@ -1,7 +1,6 @@
 package test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -16,23 +15,21 @@ public class BaseClass {
 
     @BeforeMethod(alwaysRun = true)
     @Parameters("resolution")
-    public void browserSetup(String resolution) {
-        Dimension dimension;
+    public void browserSetup(String resolutionString) {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
+        Resolution resolution = Resolution.valueOf(resolutionString.toUpperCase());
         switch (resolution) {
-            case "fullscreen" -> driver.manage().window().maximize();
-            case "1024x768" -> {
+            case FULLSCREEN -> resolution.apply(driver);
+            case MEDIUM -> {
                 smallCalendar = Boolean.TRUE;
                 smallStocksPage = Boolean.TRUE;
-                dimension = new Dimension(1024, 768);
-                driver.manage().window().setSize(dimension);
+                resolution.apply(driver);
             }
-            case "800x600" -> {
+            case SMALL -> {
                 smallHomePage = Boolean.TRUE;
                 smallStocksPage = Boolean.TRUE;
-                dimension = new Dimension(800, 600);
-                driver.manage().window().setSize(dimension);
+                resolution.apply(driver);
             }
             default -> throw new IllegalStateException("Unexpected value: " + resolution);
         }

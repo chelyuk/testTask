@@ -4,12 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public class HomePage extends AbstractPage {
+public class HomePage extends BasePage {
     private static final String HOMEPAGE_URL = "https://xm.com/";
     Actions actions = new Actions(driver);
 
@@ -35,9 +31,6 @@ public class HomePage extends AbstractPage {
     @FindBy(xpath = "//button[contains(text(), 'ACCEPT ALL')]")
     WebElement closePrivacyPopUpButton;
 
-    @FindBy(id = "risk-block")
-    WebElement riskBlock;
-
     @FindBy(xpath = "//a[normalize-space(text()) = 'Trading']")
     WebElement tradingMenu;
 
@@ -59,8 +52,7 @@ public class HomePage extends AbstractPage {
         if (small) {
             menu.click();
             researchAndEducation = researchAndEducationSmall;
-            new WebDriverWait(driver, Duration.ofSeconds(5)).until(
-                    driver -> ExpectedConditions.elementToBeClickable(researchAndEducation).apply(driver));
+            super.waitForClickable(researchAndEducation);
             actions.scrollToElement(researchAndEducation).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
         }
         researchAndEducation.click();
@@ -98,20 +90,5 @@ public class HomePage extends AbstractPage {
     public HomePage closePrivacyPopUp() {
         closePrivacyPopUpButton.click();
         return this;
-    }
-
-    public void navigateWaitAndClick(WebElement element) {
-        waitForClickable(element);
-        navigate(element);
-        element.click();
-    }
-
-    public void navigate(WebElement element) {
-        actions.scrollToElement(element).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
-    }
-
-    public void waitForClickable(WebElement element) {
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(
-                driver -> ExpectedConditions.elementToBeClickable(element).apply(driver));
     }
 }

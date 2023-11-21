@@ -3,49 +3,44 @@ package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
-public class StocksPage extends AbstractPage {
-    Actions actions = new Actions(driver);
+public class StocksPage extends BasePage {
+    private static final String SYMBOL_CELL = "//td[normalize-space(text()) = '%s']";
+    private static final String TABLE_CELL = "//td[normalize-space(text()) = '%s']//..//td[%d]";
+    private static final String TABLE_CELLS = "//td[normalize-space(text()) = '%s']//..//td[not(contains(@style, 'display: none'))]";
+    private static final String TABLE_ADDITIONAL_CELL = "(//td[normalize-space(text()) = '%s']//..//following-sibling::tr[1]//span[@class='dtr-data' and not(child::a)])[%d]";
+    private static final String READ_MORE_BUTTON = "//td[normalize-space(text()) = '%s']//..//a[normalize-space(text() = 'Read More')]";
+    private static final String READ_MORE_BUTTON_SMALL = "//td[normalize-space(text()) = '%s']//..//following-sibling::tr[1]//a";
+
 
     protected StocksPage(WebDriver driver) {
         super(driver);
     }
 
-    @Override
-    public AbstractPage openPage() {
-        return this;
-    }
 
     @FindBy(xpath = "//button[contains(@data-value, 'Norway')]")
     WebElement norwayFilterButton;
 
-    @FindBy(id = "risk-block")
-    WebElement riskBlock;
-
     public WebElement symbolCell(String symbol) {
-        String selector = String.format("//td[normalize-space(text()) = '%s']", symbol);
+        String selector = String.format(SYMBOL_CELL, symbol);
         return this.driver.findElement(By.xpath(selector));
     }
 
     public WebElement tableCell(String symbol, int columnNumber) {
-        String selector = String.format("//td[normalize-space(text()) = '%s']//..//td[%d]", symbol, columnNumber);
+        String selector = String.format(TABLE_CELL, symbol, columnNumber);
         return this.driver.findElement(By.xpath(selector));
     }
 
     public List<WebElement> tableCells(String symbol) {
-        String selector = String.format("//td[normalize-space(text()) = '%s']//..//td[not(contains(@style, 'display: none'))]", symbol);
+        String selector = String.format(TABLE_CELLS, symbol);
         return this.driver.findElements(By.xpath(selector));
     }
 
     public WebElement tableAdditionalCell(String symbol, int additionalColumnNumber) {
-        String selector = String.format("(//td[normalize-space(text()) = '%s']//..//following-sibling::tr[1]//span[@class='dtr-data' and not(child::a)])[%d]", symbol, additionalColumnNumber);
+        String selector = String.format(TABLE_ADDITIONAL_CELL, symbol, additionalColumnNumber);
         return this.driver.findElement(By.xpath(selector));
     }
 
@@ -58,12 +53,12 @@ public class StocksPage extends AbstractPage {
     }
 
     public WebElement readMoreButton(String symbol) {
-        String selector = String.format("//td[normalize-space(text()) = '%s']//..//a[normalize-space(text() = 'Read More')]", symbol);
+        String selector = String.format(READ_MORE_BUTTON, symbol);
         return this.driver.findElement(By.xpath(selector));
     }
 
     public WebElement readMoreButtonSmall(String symbol) {
-        String selector = String.format("//td[normalize-space(text()) = '%s']//..//following-sibling::tr[1]//a", symbol);
+        String selector = String.format(READ_MORE_BUTTON_SMALL, symbol);
         return this.driver.findElement(By.xpath(selector));
     }
 
@@ -88,24 +83,5 @@ public class StocksPage extends AbstractPage {
         }
         navigateWaitAndClick(button);
         return new StockDetailsPage(driver);
-    }
-    public void navigateAndClick(WebElement element) {
-        navigate(element);
-        element.click();
-    }
-
-    public void navigateWaitAndClick(WebElement element) {
-        waitForClickable(element);
-        navigate(element);
-        element.click();
-    }
-
-    public void navigate(WebElement element) {
-        actions.scrollToElement(element).scrollByAmount(0, riskBlock.getSize().getHeight()).perform();
-    }
-
-    public void waitForClickable(WebElement element) {
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(
-                driver -> ExpectedConditions.elementToBeClickable(element).apply(driver));
     }
 }

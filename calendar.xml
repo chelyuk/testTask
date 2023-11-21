@@ -12,7 +12,7 @@
         </classes>
     </test>
     <test verbose="2" name="medium size">
-        <parameter name="resolution" value="1024x768"/>
+        <parameter name="resolution" value="medium"/>
         <classes>
             <class name="test.CalendarTest">
                 <methods>
@@ -22,7 +22,7 @@
         </classes>
     </test>
     <test verbose="2" name="mini size">
-        <parameter name="resolution" value="800x600"/>
+        <parameter name="resolution" value="small"/>
         <classes>
             <class name="test.CalendarTest">
                 <methods>
